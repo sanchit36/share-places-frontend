@@ -10,7 +10,7 @@ const DUMMY_PLACES = [
     imageUrl:
       "https://cdn.britannica.com/73/114973-050-2DC46083/Midtown-Manhattan-Empire-State-Building-New-York.jpg",
     address: "20 W 34th St, New York, NY 10001, United States",
-    locations: {
+    location: {
       lat: 40.7484405,
       lng: -73.9878531,
     },
@@ -23,7 +23,7 @@ const DUMMY_PLACES = [
     imageUrl:
       "https://cdn.britannica.com/73/114973-050-2DC46083/Midtown-Manhattan-Empire-State-Building-New-York.jpg",
     address: "20 W 34th St, New York, NY 10001, United States",
-    locations: {
+    location: {
       lat: 40.7484405,
       lng: -73.9878531,
     },
