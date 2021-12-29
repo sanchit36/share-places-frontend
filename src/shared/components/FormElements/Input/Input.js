@@ -24,8 +24,8 @@ const inputReducer = (state, action) => {
 
 const Input = (props) => {
   const [inputState, dispatch] = useReducer(inputReducer, {
-    value: "",
-    isValid: false,
+    value: props.initialValue || "",
+    isValid: props.initialValid || false,
     isTouched: false,
   });
 
@@ -89,6 +89,8 @@ Input.propTypes = {
   element: PropTypes.oneOf(["input", "textarea"]).isRequired,
   validators: PropTypes.array.isRequired,
   errorText: PropTypes.string.isRequired,
+  initialValue: PropTypes.string,
+  initialValid: PropTypes.bool,
   type: PropTypes.string,
   placeholder: PropTypes.string,
   rows: PropTypes.string,
