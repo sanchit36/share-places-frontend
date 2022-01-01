@@ -1,13 +1,13 @@
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
-import Card from "../../shared/components/UIElements/Card/Card";
-import UserItem from "./UserItem";
-import "./UserList.css";
+import Card from '../../shared/components/UIElements/Card/Card';
+import UserItem from './UserItem';
+import './UserList.css';
 
 const UserList = ({ items }) => {
   if (items.length === 0) {
     return (
-      <div className="center">
+      <div className='center'>
         <Card>
           <h2>No users found.</h2>
         </Card>
@@ -16,14 +16,14 @@ const UserList = ({ items }) => {
   }
 
   return (
-    <ul className="users-list">
+    <ul className='users-list'>
       {items.map((user) => (
         <UserItem
           key={user.id}
           id={user.id}
           image={user.image}
           name={user.name}
-          placeCount={user.places}
+          placeCount={user.places.length}
         />
       ))}
     </ul>
@@ -36,7 +36,7 @@ UserList.propTypes = {
       id: PropTypes.string.isRequired,
       image: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
-      places: PropTypes.number.isRequired,
+      places: PropTypes.array.isRequired,
     })
   ).isRequired,
 };
