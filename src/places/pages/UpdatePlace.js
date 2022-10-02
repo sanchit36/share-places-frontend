@@ -78,7 +78,7 @@ const UpdatePlace = () => {
   if (!place && !error) {
     return (
       <div className='center'>
-        <Card>
+        <Card p='1rem' m='2rem auto'>
           <h2>Could not find place!</h2>
         </Card>
       </div>
@@ -89,33 +89,35 @@ const UpdatePlace = () => {
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
       {!isLoading && place && (
-        <form className='place-form' onSubmit={placeUpdateSubmitHandler}>
-          {isLoading && <LoadingSpinner asOverlay />}
-          <Input
-            id='title'
-            element='input'
-            type='text'
-            label='Title'
-            validators={[VALIDATOR_REQUIRE()]}
-            errorText='Please enter a valid title'
-            onInput={inputHandler}
-            initialValue={place.title}
-            initialValid={true}
-          />
-          <Input
-            id='description'
-            element='textarea'
-            label='Description'
-            validators={[VALIDATOR_MINLENGTH(5)]}
-            errorText='Please enter a valid description (at least 5 characters)'
-            onInput={inputHandler}
-            initialValue={place.description}
-            initialValid={true}
-          />
-          <Button type='submit' disabled={!formState.isValid}>
-            UPDATE PLACE
-          </Button>
-        </form>
+        <Card m='2rem auto'>
+          <form className='place-form' onSubmit={placeUpdateSubmitHandler}>
+            {isLoading && <LoadingSpinner asOverlay />}
+            <Input
+              id='title'
+              element='input'
+              type='text'
+              label='Title'
+              validators={[VALIDATOR_REQUIRE()]}
+              errorText='Please enter a valid title'
+              onInput={inputHandler}
+              initialValue={place.title}
+              initialValid={true}
+            />
+            <Input
+              id='description'
+              element='textarea'
+              label='Description'
+              validators={[VALIDATOR_MINLENGTH(5)]}
+              errorText='Please enter a valid description (at least 5 characters)'
+              onInput={inputHandler}
+              initialValue={place.description}
+              initialValid={true}
+            />
+            <Button type='submit' disabled={!formState.isValid}>
+              UPDATE PLACE
+            </Button>
+          </form>
+        </Card>
       )}
     </React.Fragment>
   );

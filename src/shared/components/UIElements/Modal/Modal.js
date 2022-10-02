@@ -1,14 +1,19 @@
-import React from "react";
-import ReactDom from "react-dom";
-import PropTypes from "prop-types";
-import { CSSTransition } from "react-transition-group";
+import React from 'react';
+import ReactDom from 'react-dom';
+import PropTypes from 'prop-types';
+import { CSSTransition } from 'react-transition-group';
 
-import Backdrop from "../Backdrop/Backdrop";
-import "./Modal.css";
+import Backdrop from '../Backdrop/Backdrop';
+import './Modal.css';
+import { Box, useColorModeValue } from '@chakra-ui/react';
 
 const ModalOverlay = (props) => {
   const content = (
-    <div className={`modal ${props.className}`} style={props.style}>
+    <Box
+      className={`modal ${props.className}`}
+      style={props.style}
+      bg={useColorModeValue('gray.100', 'gray.900')}
+    >
       <header className={`modal__header ${props.headerClass}`}>
         <h2>{props.header}</h2>
       </header>
@@ -26,10 +31,10 @@ const ModalOverlay = (props) => {
           {props.footer}
         </footer>
       </form>
-    </div>
+    </Box>
   );
 
-  return ReactDom.createPortal(content, document.getElementById("modal-hook"));
+  return ReactDom.createPortal(content, document.getElementById('modal-hook'));
 };
 
 const Modal = (props) => {
@@ -41,7 +46,7 @@ const Modal = (props) => {
         mountOnEnter
         unmountOnExit
         timeout={200}
-        classNames="modal"
+        classNames='modal'
       >
         <ModalOverlay {...props} />
       </CSSTransition>

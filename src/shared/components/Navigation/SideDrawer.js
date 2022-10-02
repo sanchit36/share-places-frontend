@@ -1,29 +1,32 @@
-import ReactDom from "react-dom";
-import PropTypes from "prop-types";
-import { CSSTransition } from "react-transition-group";
+import ReactDom from 'react-dom';
+import PropTypes from 'prop-types';
+import {
+  Drawer,
+  DrawerBody,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+} from '@chakra-ui/react';
 
-import "./SideDrawer.css";
-
-const SideDrawer = ({ children, show, onClick }) => {
+const SideDrawer = ({ children, isOpen, onClose }) => {
   const content = (
-    <CSSTransition
-      in={show}
-      timeout={200}
-      classNames="slide-in-left"
-      mountOnEnter
-      unmountOnExit
-    >
-      <aside className="side-drawer" onClick={onClick}>
-        {children}
-      </aside>
-    </CSSTransition>
+    <Drawer placement='left' size='full' onClose={onClose} isOpen={isOpen}>
+      <DrawerOverlay />
+
+      <DrawerContent>
+        <DrawerCloseButton />
+        <DrawerBody display='flex' justifyContent='center' alignItems='center'>
+          {children}
+        </DrawerBody>
+      </DrawerContent>
+    </Drawer>
   );
-  return ReactDom.createPortal(content, document.getElementById("drawer-hook"));
+  return ReactDom.createPortal(content, document.getElementById('drawer-hook'));
 };
 
 SideDrawer.prototype = {
-  show: PropTypes.bool.isRequired,
-  onClick: PropTypes.func.isRequired,
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
 };
 
 export default SideDrawer;

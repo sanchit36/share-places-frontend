@@ -9,7 +9,7 @@ const PlaceList = ({ items, onDeletePlace }) => {
   if (items.length === 0) {
     return (
       <div className='place-list center'>
-        <Card>
+        <Card p='1rem' m='2rem auto'>
           <h2>No places found. Maybe create one?</h2>
           <Button to='/places/new'>Share Place</Button>
         </Card>

@@ -1,49 +1,53 @@
 import { useContext } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink as RRDNavLink } from 'react-router-dom';
+import { Link, useColorModeValue, Flex } from '@chakra-ui/react';
 import { AuthContext } from '../../content/auth-context';
-import Button from '../FormElements/Button/Button';
 
-import './NavLinks.css';
+const NavLink = ({ children, ...rest }) => (
+  <Link
+    as={RRDNavLink}
+    px={2}
+    py={1}
+    rounded={'md'}
+    _hover={{
+      textDecoration: 'none',
+      bg: useColorModeValue('gray.200', 'gray.700'),
+    }}
+    to='/'
+    {...rest}
+  >
+    {children}
+  </Link>
+);
 
-const NavLinks = () => {
+const NavLinks = ({ onClose }) => {
   const auth = useContext(AuthContext);
 
   return (
-    <ul className='nav-links'>
-      <li>
-        <NavLink to='/' exact>
-          ALL USERS
-        </NavLink>
-      </li>
-      {auth.isLoggedIn && (
-        <li>
-          <NavLink to={`/${auth.userId}/places`} exact>
+    <Flex as={'nav'} spacing={4} flexDirection={{ base: 'column', md: 'row' }}>
+      <NavLink to='/' exact onClick={onClose}>
+        ALL USERS
+      </NavLink>
+      {auth.isLoggedIn ? (
+        <>
+          <NavLink to={`/${auth.userId}/places`} exact onClick={onClose}>
             MY PLACES
           </NavLink>
-        </li>
-      )}
-      {auth.isLoggedIn && (
-        <li>
-          <NavLink to='/places/new' exact>
+          <NavLink to='/places/new' exact onClose={onClose}>
             ADD PLACE
           </NavLink>
-        </li>
-      )}
-      {!auth.isLoggedIn && (
-        <li>
-          <NavLink to='/auth' exact>
-            AUTHENTICATE
-          </NavLink>
-        </li>
+        </>
+      ) : (
+        <NavLink to='/auth' exact onClose={onClose}>
+          LOGIN/SIGN UP
+        </NavLink>
       )}
       {auth.isLoggedIn && (
-        <li>
-          <Button inverse onClick={auth.logout}>
-            LOGOUT
-          </Button>
-        </li>
+        <NavLink to='/' onClick={auth.logout}>
+          LOGOUT
+        </NavLink>
       )}
-    </ul>
+    </Flex>
   );
 };
 

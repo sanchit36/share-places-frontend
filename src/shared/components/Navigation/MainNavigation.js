@@ -1,50 +1,55 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
+import {
+  Box,
+  Flex,
+  HStack,
+  IconButton,
+  Button,
+  useDisclosure,
+  useColorModeValue,
+  Hide,
+  Text,
+  useColorMode,
+} from '@chakra-ui/react';
+import { HamburgerIcon, CloseIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
 
-import Backdrop from "../UIElements/Backdrop/Backdrop";
-import MainHeader from "./MainHeader";
-import NavLinks from "./NavLinks";
-import SideDrawer from "./SideDrawer";
-
-import "./MainNavigation.css";
+import NavLinks from './NavLinks';
+import SideDrawer from './SideDrawer';
 
 const MainNavigation = () => {
-  const [drawerIsOpen, setDrawerIsOpen] = useState(false);
-
-  const openDrawerHandler = () => {
-    setDrawerIsOpen(true);
-  };
-
-  const closeDrawerHandler = () => {
-    setDrawerIsOpen(false);
-  };
+  const { colorMode, toggleColorMode } = useColorMode();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
-      {drawerIsOpen && <Backdrop onClick={closeDrawerHandler} />}
-      <SideDrawer show={drawerIsOpen} onClick={closeDrawerHandler}>
-        <nav className="main-navigation__drawer-nav">
-          <NavLinks />
-        </nav>
+      <SideDrawer isOpen={isOpen} onClose={onClose}>
+        <NavLinks onClose={onClose} />
       </SideDrawer>
-      <MainHeader>
-        <button
-          className="main-navigation__menu-btn"
-          onClick={openDrawerHandler}
-        >
-          <span />
-          <span />
-          <span />
-        </button>
 
-        <h1 className="main-navigation__title">
-          <Link to="/">SharePlaces</Link>
-        </h1>
-
-        <nav className="main-navigation__header-nav">
-          <NavLinks />
-        </nav>
-      </MainHeader>
+      <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
+        <Flex h={16} alignItems={'center'} justifyContent='space-between'>
+          <IconButton
+            size={'md'}
+            icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
+            aria-label={'Open Menu'}
+            display={{ md: 'none' }}
+            onClick={isOpen ? onClose : onOpen}
+          />
+          <HStack spacing={8} alignItems={'center'}>
+            <Text fontSize='2xl' fontWeight='bold'>
+              <Link to='/'>SharePlaces</Link>
+            </Text>
+            <Hide below='md'>
+              <NavLinks />
+            </Hide>
+          </HStack>
+          <Flex alignItems={'center'}>
+            <Button onClick={toggleColorMode}>
+              {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
+            </Button>
+          </Flex>
+        </Flex>
+      </Box>
     </>
   );
 };

@@ -18,14 +18,12 @@
   width: 100%;
   font: inherit;
   border: 1px solid #ccc;
-  background: #f8f8f8;
   padding: 0.15rem 0.25rem;
 }
 
 .form-control input:focus,
 .form-control textarea:focus {
   outline: none;
-  background: #ebebeb;
   border-color: #510077;
 }
 
@@ -37,5 +35,4 @@
 .form-control--invalid input,
 .form-control--invalid textarea {
   border-color: red;
-  background: #ffd1d1;
 }

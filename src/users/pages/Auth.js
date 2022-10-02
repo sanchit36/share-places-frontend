@@ -1,3 +1,4 @@
+import { Box, Text } from '@chakra-ui/react';
 import React, { useContext, useState } from 'react';
 
 import Button from '../../shared/components/FormElements/Button/Button';
@@ -104,62 +105,74 @@ const Auth = () => {
   return (
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
-      <Card className='authentication'>
-        {isLoading && <LoadingSpinner asOverlay />}
-        <h2>Login Required</h2>
-        <hr />
+      <Box my='7rem'>
+        <Card className='authentication'>
+          {isLoading && <LoadingSpinner asOverlay />}
+          <Text
+            as='h2'
+            fontSize='2xl'
+            fontWeight='bold'
+            textAlign='center'
+            py='1rem'
+          >
+            {isLoginMode ? 'Login Required' : 'Create an Account'}
+          </Text>
+          <hr />
 
-        <form className='form-container' onSubmit={authSubmitHandler}>
-          {!isLoginMode && (
+          <Box as='form' px='2rem' py='1rem' onSubmit={authSubmitHandler}>
+            {!isLoginMode && (
+              <Input
+                id='name'
+                element='input'
+                type='text'
+                label='Name'
+                validators={[VALIDATOR_REQUIRE()]}
+                errorText='Please enter a valid name'
+                onInput={inputHandler}
+              />
+            )}
+            {!isLoginMode && (
+              <ImageUpload
+                id='image'
+                center
+                onInput={inputHandler}
+                errorText='Please enter a valid image'
+              />
+            )}
             <Input
-              id='name'
+              id='email'
               element='input'
-              type='text'
-              label='Name'
-              validators={[VALIDATOR_REQUIRE()]}
-              errorText='Please enter a valid name'
+              type='email'
+              label='Email'
+              validators={[VALIDATOR_EMAIL()]}
+              errorText='Please enter a valid email address'
               onInput={inputHandler}
             />
-          )}
-          {!isLoginMode && (
-            <ImageUpload
-              id='image'
-              center
+            <Input
+              id='password'
+              element='input'
+              type='password'
+              label='Password'
+              validators={[VALIDATOR_MINLENGTH(8)]}
+              errorText='Please enter a valid password, at least 8 characters'
               onInput={inputHandler}
-              errorText='Please enter a valid image'
             />
-          )}
-          <Input
-            id='email'
-            element='input'
-            type='email'
-            label='Email'
-            validators={[VALIDATOR_EMAIL()]}
-            errorText='Please enter a valid email address'
-            onInput={inputHandler}
-          />
-          <Input
-            id='password'
-            element='input'
-            type='password'
-            label='Password'
-            validators={[VALIDATOR_MINLENGTH(8)]}
-            errorText='Please enter a valid password, at least 8 characters'
-            onInput={inputHandler}
-          />
-          <Button type='submit' disabled={!formState.isValid}>
-            {isLoginMode ? 'LOGIN' : 'SIGN UP'}
-          </Button>
-        </form>
+            <Button type='submit' disabled={!formState.isValid}>
+              {isLoginMode ? 'LOGIN' : 'SIGN UP'}
+            </Button>
+          </Box>
 
-        <hr />
+          <hr />
 
-        <Button inverse onClick={toggleModeHandler}>
-          {isLoginMode
-            ? "Don't have an account? Sign up!"
-            : 'Already have a account? Login!'}
-        </Button>
-      </Card>
+          <Box px='2rem' py='1rem' textAlign='center'>
+            <Button inverse onClick={toggleModeHandler}>
+              {isLoginMode
+                ? "Don't have an account? Sign up!"
+                : 'Already have a account? Login!'}
+            </Button>
+          </Box>
+        </Card>
+      </Box>
     </React.Fragment>
   );
 };
