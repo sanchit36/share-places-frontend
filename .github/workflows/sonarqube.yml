@@ -1,22 +1,45 @@
+name: Analyze pull request
+
 on:
-  # Trigger analysis when pushing to your main branches, and when creating a pull request.
-  push:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
     branches:
       - master
-  pull_request:
-      types: [opened, synchronize, reopened]
+      - 'JAHIA-[0-9]-[0-9]-[0-9]-X-BRANCH'
+      - '[0-9]_[0-9]_x'
+      - '[0-9]-[0-9]-X-BRANCH'
 
-name: Main Workflow
 jobs:
-  sonarqube:
+  build:
+
     runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@v3
-      with:
-        # Disabling shallow clone is recommended for improving relevancy of reporting
-        fetch-depth: 0
-    - name: SonarQube Scan
-      uses: sonarsource/sonarqube-scan-action@master
-      env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+      - name: Setup sonarqube
+        uses: warchant/setup-sonar-scanner@v1
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+
+      - name: 'Checkout repository on branch: ${{ github.REF }}'
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.HEAD_REF }}
+
+      - name: Retrieve entire repository history
+        run: |
+          git fetch --prune --unshallow
+
+      - name: Run an analysis of the PR
+        env:
+          # to get access to secrets.SONAR_TOKEN, provide GITHUB_TOKEN
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: sonar-scanner
+          -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
+          -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+          -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
+          -Dsonar.pullrequest.key=${{ github.event.number }}
+          -Dsonar.pullrequest.branch=${{ github.HEAD_REF }}
+          -Dsonar.pullrequest.base=${{ github.BASE_REF }}
+          -Dsonar.pullrequest.github.repository=${{ github.repository }}
+          -Dsonar.scm.provider=git
+          -Dsonar.java.binaries=/tmp
