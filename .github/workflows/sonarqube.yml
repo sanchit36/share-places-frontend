@@ -5,6 +5,9 @@ on:
     types: [opened, edited, reopened, synchronize]
     branches:
       - master
+      - 'JAHIA-[0-9]-[0-9]-[0-9]-X-BRANCH'
+      - '[0-9]_[0-9]_x'
+      - '[0-9]-[0-9]-X-BRANCH'
 
 jobs:
   build:
@@ -14,6 +17,8 @@ jobs:
     steps:
       - name: Setup sonarqube
         uses: warchant/setup-sonar-scanner@v1
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
 
       - name: 'Checkout repository on branch: ${{ github.REF }}'
         uses: actions/checkout@v2
@@ -29,7 +34,7 @@ jobs:
           # to get access to secrets.SONAR_TOKEN, provide GITHUB_TOKEN
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: sonar-scanner
-          -Dsonar.host.url=${{ secrets.SONAR_URL }}
+          -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
           -Dsonar.login=${{ secrets.SONAR_TOKEN }}
           -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
           -Dsonar.pullrequest.key=${{ github.event.number }}
